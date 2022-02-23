@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="deepApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js" charset="utf-8"></script>
+    <script src="tables.js" charset="utf-8"></script>
+    <script src="main.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="main" ng-controller="deepController as vm">
+        <div class="board">
+          <div class="header">
+            <div class="name">
+              <h1>DEEP</h1>
+            </div>
+          </div>
+
+          <div class="content">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Depth of first dive:</td>
+                  <td><input type="text" size="3" maxlength="3" ng-model="vm.firstDepth" ng-change="vm.calculateParameters()"></td>
+                  <td>feet</td>
+                </tr>
+
+                <tr>
+                  <td>Bottom time of first dive:</td>
+                  <td><input type="text" size="3" maxlength="3" ng-model="vm.firstTime" ng-change="vm.calculateParameters()"></td>
+                  <td>minutes</td>
+                </tr>
+
+                <tr>
+                  <td>Length of surface interval:</td>
+                  <td><input type="text" size="3" maxlength="3" ng-model="vm.surfaceTime" ng-change="vm.calculateParameters()"></td>
+                  <td>minutes</td>
+                </tr>
+
+                <tr>
+                  <td>Depth of second dive:</td>
+                  <td><input type="text" size="3" maxlength="3" ng-model="vm.secondDepth" ng-change="vm.calculateParameters()"></td>
+                  <td>feet</td>
+                </tr>
+
+                <tr>
+                  <td>Bottom time of second dive:</td>
+                  <td><input type="text" size="3" maxlength="3" ng-model="vm.secondTime" ng-change="vm.calculateParameters()"></td>
+                  <td>minutes</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <hr ng-if="vm.firstDepth || vm.firstTime || vm.surfaceTime || vm.secondDepth || vm.secondTime">
+
+            <div class="results">
+              <ul>
+                <li ng-if="!vm.firstDepth && !vm.firstTime && !vm.surfaceTime && !vm.secondDepth && vm.secondTime">Please enter parameters for the first dive, the surface interval after the first dive, and the depth for the second dive.</li>
+
+                <li ng-if="!vm.firstDepth && !vm.firstTime && !vm.surfaceTime && vm.secondDepth">Please enter parameters for the first dive and the surface interval after the first dive.</li>
+
+                <li ng-if="!vm.firstDepth && !vm.firstTime && vm.surfaceTime">Please enter the depth and bottom time for the first dive.</li>
+
+                <li ng-if="!vm.firstDepth && vm.firstTime">Please enter the depth for the first dive.</li>
+
+                <li ng-if="vm.firstDepth">{{vm.maxBottomTime}}</li>
+
+                <li ng-if="vm.firstDepth <= 140 && vm.firstTime">{{vm.firstPressureGroup}}</li>
+
+                <li ng-if="vm.firstDepth <= 140 && vm.firstTime <= vm.maxTime && vm.surfaceTime">{{vm.secondPressureGroup}}</li>
+
+                <li ng-if="vm.firstDepth <= 140 && vm.firstTime <= vm.maxTime && vm.surfaceTime && vm.secondDepth">{{vm.residualTime}}</li>
+
+                <li ng-if="vm.firstDepth <= 140 && vm.firstTime <= vm.maxTime && vm.surfaceTime && vm.secondDepth <= vm.maxDepth && vm.secondTime">{{vm.finalPressureGroup}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="reload">
+            <button class="reset" ng-click="vm.reset()">RESET</button>
+          </div>
+
+          <div class="credits">
+            <span>Andres Arango | &copy; 2022</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
